@@ -1,7 +1,7 @@
 # Create an Atm Application that includes:
 # An Account class
 # 3 attributes: name, balance, pin
-# Create 4 additional methods: display_balance, withdraw, deposit, and pin_error. 
+# Create 4 additional methods: display_balance, withdraw, deposit, and pin_error.
 # The user should be prompted to enter their pin anytime they call display_balance, withdraw, or deposit.
 # pin_error should contain  "Access denied: incorrect PIN." and be puts when the user types the wrong pin.
 
@@ -17,6 +17,25 @@ class Account
 
 	end
 
+def question
+	puts "Hello #{@name}, do you want to check your balance, deposit or withdraw money?"
+	answer = gets.chomp.downcase
+	if answer == "check my balance" || answer =="balance"
+			display_balance
+			question
+		elsif answer == "deposit money" || answer == "deposit"
+			deposit
+			question
+		elsif answer == "withdraw money" || answer == "withdraw"
+			withdraw
+			question
+		elsif answer == "done"
+			puts "Have a good day, #{@name!}"
+		else
+			puts "Invalid input. Transaction ended!"
+		end
+	end
+
 	def display_balance #(question)
 		puts "Checking #{@name}'s Balance"
 		puts "Enter your pin."
@@ -25,14 +44,8 @@ class Account
 			pin_error
 		else
 			puts "Your balance is $#{@balance}."
-			# puts question
-			# input = gets.chomp
-			# if input == "yes"
-			# 	puts "Hello #{person_info.name}, do you want to check your balance, deposit or withdraw money?"
-			# 	input = gets.chomp
-			# end
-		end
-		
+	end
+
 	end
 
 	def withdraw
@@ -86,19 +99,4 @@ class Account
 end
 
 person_info = Account.new(1234, 500, "Tyler")
-person_info.pin=(1111)
-person_info.name=("John")
-
-
-puts "Hello #{person_info.name}, do you want to check your balance, deposit or withdraw money?"
-answer = gets.chomp.downcase
-if answer == "check my balance" || answer =="balance"
-		person_info.display_balance #("Do you want to continue?")
-	elsif answer == "deposit money" || answer == "deposit"
-		person_info.deposit
-	elsif answer == "withdraw money" || answer == "withdraw"
-		person_info.withdraw
-	else
-		puts "Invalid input. Transaction ended!"
-	end
-
+person_info.question
