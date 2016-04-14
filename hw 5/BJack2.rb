@@ -47,7 +47,7 @@ end
 	def card_deck
 		deck_num=[]
 		deck_suit=[]
-		deck_num = %w[2 3 4 5 6 7 8 9 10 A J K Q]
+		deck_num = %w[2 3 4 5 6 7 8 9 10 A J Q K]
 		deck_suit = %w[Clubs Diamonds Spades Hearts]
 		@deck_card = deck_num.shuffle.pop
 		@deck_card
@@ -129,10 +129,12 @@ end
 			puts "Waiting on Dealer's move."
 			dealer_choice
 			if @sum_computer > @sum && @sum_computer > 21 #comparing total values of cards in hand to computers
+				puts "stand" 
 				puts "Dealer lost!"
 				@money_total = @money_total + (@money)
 				puts "You now have $#{@money_total}."
 			elsif @sum_computer > @sum && @sum_computer <=21
+				puts "hit"
 				puts "Dealer won!"
 				@money_total = (@money_total - @money) + @money_total
 				puts "You lost your money. You have $#{@money_total}."
@@ -154,67 +156,69 @@ end
 	end
 	def dealer_choice
 		@computer_options=[]
-		dealer_choice_10
-		dealer_choice_10_16
-		dealer_choice_17_19
-		dealer_choice_20
-	end
-	def dealer_choice_10
 		if @sum_computer < 10
+			dealer_choice_10
+		elsif  @sum_computer >= 10 &&  @sum_computer <= 16
+			dealer_choice_10_16
+		elsif @sum_computer > 16 &&  @sum_computer < 20
+		dealer_choice_17_19
+		# else
+		# dealer_choice_20
+		end
+	end
+
+	def dealer_choice_10
 			@computer_options<<"hit"
 			puts com_choice = @computer_options.shuffle.sample
 			puts ""
 			if com_choice == "hit"
 				puts "Dealer's new card is #{@card.join}."
 				puts "Dealer's new value is #{cards_value_computer}."
-				puts ""
+				puts "a 10"
 			end
-		end
+		dealer_choice
 	end
 	def dealer_choice_10_16
-		if @sum_computer <= 16 && @sum_computer >= 10 #85% chance computer will choose 'hit' and 15% chance choose 'stand'
 			17.times do
 				@computer_options<<"hit"
 			end
 			3.times do
 				@computer_options<<"stand"
 			end
-			com_choice = @computer_options.shuffle.sample
-			puts com_choice
+			puts com_choice = @computer_options.shuffle.sample
 			puts ""
 			if com_choice == "hit"
 				puts "Dealer's new card is #{@card.join}."
 				puts "Dealer's new value is #{cards_value_computer}."
 				puts ""
+				dealer_choice
 			else com_choice == "stand"
-				puts ""
+				puts "b 10-16"
 			end
-		end
+			
 	end
 	def dealer_choice_17_19 #10% chance computer will choose 'hit' and 90% chance choose 'stand'
-		if @sum_computer <= 19 && @sum_computer >= 17
 			2.times do
 				@computer_options<<"hit"
 			end
 			18.times do
 				@computer_options<<"stand"
 			end
-			com_choice = @computer_options.shuffle.sample
-			puts com_choice
+			puts com_choice = @computer_options.shuffle.sample
 			puts ""
 			if com_choice == "hit"
 				puts "Dealer's new card is #{@card.join}."
 				puts "Dealer's new value is #{cards_value_computer}."
 				puts ""
+				dealer_choice
 			else com_choice == "stand"
-				puts ""
+				puts "c 17-19"
 			end
-		end
 	end
 	def dealer_choice_20
 		if @sum_computer >= 20 #will never choose hit at 20 or above
 			@computer_options<<"stand"
-			puts "stand"
+			puts "stand 20"
 			puts ""
 		end
 	end
